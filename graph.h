@@ -129,7 +129,7 @@ private:
 		int w = int((sqrt(double((pairID << 3) + 1)) - 1) / 2);
 		int t = (w * w + w) >> 1;
 		n2 = pairID - t;
-		n1 = w - n2; 
+		n1 = w - n2;
 	}
 	void insertEdgeHashIDToSet(int n1, int n2)
 	{
@@ -166,6 +166,7 @@ public:
 	{
 
 		ifstream infile(filename);
+		// EE: 3/19/2021: 4:33am - Switch from infile == NULL to fix operand
 		if(!infile)
 		{
 			cout << "File " << filename << " cannot be opened" << endl;
@@ -188,7 +189,7 @@ public:
 #endif
 
 
-#ifdef dimacs_mode		
+#ifdef dimacs_mode
 		char tempstr1[1024], tempstr2[1024];
 		sscanf(line, "%s %s %d %d", tempstr1, tempstr2, &v_num, &e_num);
 #endif
