@@ -166,7 +166,7 @@ public:
 	{
 
 		ifstream infile(filename);
-		if(infile == NULL)
+		if(!infile)
 		{
 			cout << "File " << filename << " cannot be opened" << endl;
 			exit(1);
