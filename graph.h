@@ -12,10 +12,10 @@
 #include <math.h>
 
 //#define dimacs_mode
-//#define mtx_mode
-#define howard_mode
+#define mtx_mode
+//#define howard_mode
 
-//#define edge_modular_weight_mode
+#define edge_modular_weight_mode
 
 using namespace std;
 
@@ -159,6 +159,7 @@ private:
 			u1 = v2; u2 = v1;
 		}
 		encode_pairID(pairID, u1, u2);
+//		cout << "OTHER: " << pairID << " " << u1 << " " << u2 << " e: "  << e  << endl;
 		edge_hash_id_to_its_index[pairID] = e;
 	}
 public:
@@ -197,6 +198,7 @@ public:
 #ifdef mtx_mode
 		int tmp_int;
 		sscanf(line, "%d %d %d", &tmp_int, &v_num, &e_num);
+
 #endif
 
 		vertices = new Vertex[v_num + 2];
@@ -246,6 +248,7 @@ public:
 			vertices[v].set_degree(v_degree_tmp[v]);
 		}
 		max_degree = v_degree_tmp[1];
+		cout << max_degree << endl;
 		for(int i = 2; i <= v_num; i++)
 		{
 			if(v_degree_tmp[i] > max_degree)
@@ -258,6 +261,7 @@ public:
 			int v1, v2;
 			edges[e].get_vertices(v1, v2);
 			edges[e].set_weight(((v1 + v2) % 200) + 1);
+			cout << "edge: " << e << " weight:  " << edges[e].get_weight() << endl;
 		}
 #endif
 		memset(v_degree_tmp, 0, sizeof(int) * (v_num + 2));
@@ -311,6 +315,7 @@ public:
 			m1 = n2; m2 = n1;
 		}
 		encode_pairID(pairID, m1, m2);
+		cout << "encoded pairID: " << pairID << " look up hash: " << edge_hash_id_to_its_index[pairID] <<  endl;
 		return edge_hash_id_to_its_index[pairID];
 	}
 	~Graph()

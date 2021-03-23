@@ -37,12 +37,12 @@ public:
 	void clear()
 	{
 		//memset(array, 0, sizeof(int) * array_capacity);
-		//memset(index_in_array, 0, sizeof(int) * array_capacity);	
+		//memset(index_in_array, 0, sizeof(int) * array_capacity);
 		for(int i = 1; i <= array_size; i++)
 		{
 			index_in_array[array[i]] = 0;
 		}
-		array_size = 0;	
+		array_size = 0;
 	}
 	void insert_element(int e)
 	{
