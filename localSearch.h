@@ -77,11 +77,12 @@ private:
 
     int check_solution()
     {
-        int i, j;
+        int i, j, k=0;
         long double verified_weight_sum = 0;
+      //  cout << "( ";
         for(i = 1; i <= best_weighted_clique_size; i++)
         {
-            cout << best_weighted_clique[i] << endl;
+            cout << best_weighted_clique[i] << " ";
             for(j = i + 1; j <= best_weighted_clique_size; j++)
             {
                 if(!isConnected(best_weighted_clique[i], best_weighted_clique[j]))
@@ -103,7 +104,9 @@ private:
                     verified_weight_sum += edges[e].get_weight();
                 }
             }
+
         }
+        cout << endl;
         if(!long_double_equals(verified_weight_sum, best_clique_weight))
         {
             cout << "verified_weight_sum: " << verified_weight_sum << endl;
@@ -247,22 +250,31 @@ private:
         {
             int n = nbs[i];
             int e = adj_edgs[i];
+            //reduce duplication of assigned value for computed elements
+            int edges_weight = edges[e].get_weight();
             if(inClique[n])
             {
-                clique_weight += edges[e].get_weight();
-                score[n] -= edges[e].get_weight();
+                //clique_weight += edges[e].get_weight();
+                clique_weight += edges_weight;
+                //
+                //score[n] += edges[e].get_weight();
+                score[n] += edges_weight;
+                //
                 continue;
             }
-            score[n] += edges[e].get_weight();
+            //score[n] += edges[e].get_weight();
+            score[n] += edges_weight;
+            //
             connect_clique_degree[n]++;
             if(connect_clique_degree[n] == 1)	//the first time identified as a clique neighbor
             {
                 ptr_to_clique_neighbors->insert_element(n);
-                if(ptr_to_weighted_clique->size() == 1)// the neighbors of v should be used to establish add-set
+                int ptr_to_weighted_clique_size = ptr_to_weighted_clique->size();
+                if(ptr_to_weighted_clique_size == 1)// the neighbors of v should be used to establish add-set
                 {
                     ptr_to_add_set->insert_element(n);// equivalent to put all neighbors into add-set
                 }
-                else if(ptr_to_weighted_clique->size() == 2)// the neighbors of v should be put into the swap-set
+                else if(ptr_to_weighted_clique_size == 2)// the neighbors of v should be put into the swap-set
                 {
                     int z;
                     if(ptr_to_weighted_clique->at(1) == v)
@@ -338,7 +350,7 @@ private:
             }
 #endif
             add(v);
-            show_state();
+ //           show_state();
 //getchar();
             unlock_all_neighbors(v);
         }
@@ -371,7 +383,7 @@ private:
             int best_remove_v;
 #ifdef neg_score_greedy_mode
             best_remove_v = ptr_to_weighted_clique->best_element(score, time_stamp);
-cout << "best_remove_v: " << best_remove_v << endl;
+//cout << "best_remove_v: " << best_remove_v << endl;
 #endif
             int best_swap_v = 0;
             best_swap_v = ptr_to_swap_set->best_element(swap_partner, confChange, score, time_stamp);
@@ -538,11 +550,6 @@ public:
                 {
                     times(&finish);
                     double elap_time = (finish.tms_utime + finish.tms_stime - start_time) / sysconf(_SC_CLK_TCK);
-                    cout << "Start time: " << start_time << endl;
-                    cout << "Finish Utime: " << finish.tms_utime << " System time:  " <<  finish.tms_stime << endl;
-                    cout << sysconf(_SC_CLK_TCK) << endl;
-                    cout << "time limit: " << time_limit << endl;
-
                     if(elap_time >= time_limit) return;
                 }
                 local_move();
@@ -628,23 +635,27 @@ public:
         */
 
         int i, j;
+        //Store size variable for use in each for loop
+        //reduece the number of size calls
+        int prt_to_weighted_clique_size = ptr_to_weighted_clique->size();
+        int ptr_to_clique_neighbors_size = ptr_to_clique_neighbors->size();
         cout << "step: " << step << endl;
         cout << "the clique: " << endl;
-        for(i = 1; i <= ptr_to_weighted_clique->size(); i++)
+        for(i = 1; i <= prt_to_weighted_clique_size; i++)
         {
             cout << ptr_to_weighted_clique->at(i) << '\t';
         }
         cout << endl;
         cout << "scores: " << endl;
-        for(i = 1; i <= ptr_to_weighted_clique->size(); i++)
+        for(i = 1; i <= prt_to_weighted_clique_size; i++)
         {
             cout << score[ptr_to_weighted_clique->at(i)] << '\t';
         }
         cout << endl;
 
-        for(i = 1; i <= ptr_to_weighted_clique->size(); i++)
+        for(i = 1; i <= prt_to_weighted_clique_size; i++)
         {
-            for(j = i + 1; j <= ptr_to_weighted_clique->size(); j++)
+            for(j = i + 1; j <= prt_to_weighted_clique_size; j++)
             {
                 if(!isConnected(ptr_to_weighted_clique->at(i), ptr_to_weighted_clique->at(j)))
                 {
@@ -655,7 +666,7 @@ public:
             }
         }
         cout << "clique weight: " << clique_weight << endl;
-        cout << "weighted clique size: " << ptr_to_weighted_clique->size() << endl;
+        cout << "weighted clique size: " << prt_to_weighted_clique_size << endl;
         cout << "swap pairs:" << endl;
         for(v = 1; v <= v_num; v++)
         {
@@ -663,20 +674,19 @@ public:
                 cout << "outside: " << v << " and inside: " << swap_partner[v] << endl;
         }
         cout << "clique neighbors: " << endl;
-
-        for(i = 1; i <= ptr_to_clique_neighbors->size(); i++)
+        for(i = 1; i <= ptr_to_clique_neighbors_size; i++)
         {
             cout << ptr_to_clique_neighbors->at(i) << '\t';
         }
         cout << endl;
         cout << "connect clique degrees: " << endl;
-        for(i = 1; i <= ptr_to_clique_neighbors->size(); i++)
+        for(i = 1; i <= ptr_to_clique_neighbors_size; i++)
         {
             cout << connect_clique_degree[ptr_to_clique_neighbors->at(i)] << '\t';
         }
         cout << endl;
         cout << "scores: " << endl;
-        for(i = 1; i <= ptr_to_clique_neighbors->size(); i++)
+        for(i = 1; i <= ptr_to_clique_neighbors_size; i++)
         {
             cout << score[ptr_to_clique_neighbors->at(i)] << '\t';
         }

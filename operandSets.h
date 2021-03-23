@@ -29,7 +29,7 @@ public:
 };
 class ConfchangedScoreAgePickSet : public Bijection
 {
-public:	
+public:
 	ConfchangedScoreAgePickSet(int sz) : Bijection(sz)
 	{
 	}
@@ -44,7 +44,7 @@ public:
 		int i;
 		for(i = begin(); i != end(); i++)
 		{
-			int e = array[i]; 
+			int e = array[i];
 			if(confChange[e])
 			{
 				best_e = e;
@@ -69,7 +69,7 @@ public:
 		int i;
 		for(i = begin(); i != end(); i++)
 		{
-			int e = array[i]; 
+			int e = array[i];
 			if(confChange[e])
 			{
 				best_e = e;
