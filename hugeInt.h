@@ -36,7 +36,7 @@ public:
 	{
 		if(h > (LLONG_MAX >> 1) || l > (LLONG_MAX >> 1))
 		{
-			cout << "constructor of HugeInt failed, using too large numbers in construction" << endl;
+			//cout << "constructor of HugeInt failed, using too large numbers in construction" << endl;
 			exit(1);
 		}
 		high = h;
@@ -172,7 +172,7 @@ public:
 				l = (((LLONG_MAX >> 1) + 1) + l) >> 1;
 			}
 		}
-		return ((long double)l) / ld_n;			
+		return ((long double)l) / ld_n;
 	}
 	//modal
 	unsigned int operator%(int divisor)
@@ -208,7 +208,7 @@ public:
 	}
 	int operator>=(HugeInt hugeNum, int n)
 	{
-		if(hugeNum > n || hugeNum == n) 
+		if(hugeNum > n || hugeNum == n)
 			return 1;
 		return 0;
 	}

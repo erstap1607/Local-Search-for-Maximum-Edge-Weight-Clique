@@ -72,12 +72,12 @@ public:
 	}
 	void show_neighbors()
 	{
-		cout << "neighbors: ";
+		//cout << "neighbors: ";
 		for(int i = 0; i < degree; i++)
 		{
-			cout << neighbors[i] << '\t';
+			//cout << neighbors[i] << '\t';
 		}
-		cout << endl;
+		//cout << endl;
 	}
 };
 
@@ -159,7 +159,7 @@ private:
 			u1 = v2; u2 = v1;
 		}
 		encode_pairID(pairID, u1, u2);
-//		cout << "OTHER: " << pairID << " " << u1 << " " << u2 << " e: "  << e  << endl;
+//		//cout << "OTHER: " << pairID << " " << u1 << " " << u2 << " e: "  << e  << endl;
 		edge_hash_id_to_its_index[pairID] = e;
 	}
 public:
@@ -170,7 +170,7 @@ public:
 		// EE: 3/19/2021: 4:33am - Switch from infile == NULL to fix operand
 		if(!infile)
 		{
-			cout << "File " << filename << " cannot be opened" << endl;
+			//cout << "File " << filename << " cannot be opened" << endl;
 			exit(1);
 		}
 
@@ -223,7 +223,7 @@ public:
 			infile >> e_index >> v1 >> v2 >> e_weight;
 			if(e_index != e)
 			{
-				cout << "e_index read incorrectly" << endl;
+				//cout << "e_index read incorrectly" << endl;
 				exit(1);
 			}
 			edges[e].set_weight(e_weight);
@@ -248,7 +248,7 @@ public:
 			vertices[v].set_degree(v_degree_tmp[v]);
 		}
 		max_degree = v_degree_tmp[1];
-		//cout << max_degree << endl;
+		////cout << max_degree << endl;
 		for(int i = 2; i <= v_num; i++)
 		{
 			if(v_degree_tmp[i] > max_degree)
@@ -261,7 +261,7 @@ public:
 			int v1, v2;
 			edges[e].get_vertices(v1, v2);
 			edges[e].set_weight(((v1 + v2) % 200) + 1);
-//			cout << "edge: " << e << " weight:  " << edges[e].get_weight() << endl;
+			////cout << "Between " << v1 << " : " << v2 << "edge: " << e << " weight:  " << edges[e].get_weight() << endl;
 		}
 #endif
 		memset(v_degree_tmp, 0, sizeof(int) * (v_num + 2));
@@ -315,7 +315,7 @@ public:
 			m1 = n2; m2 = n1;
 		}
 		encode_pairID(pairID, m1, m2);
-//		cout << "encoded pairID: " << pairID << " look up hash: " << edge_hash_id_to_its_index[pairID] <<  endl;
+//		//cout << "encoded pairID: " << pairID << " look up hash: " << edge_hash_id_to_its_index[pairID] <<  endl;
 		return edge_hash_id_to_its_index[pairID];
 	}
 	~Graph()

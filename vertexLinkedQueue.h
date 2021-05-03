@@ -30,7 +30,7 @@ public:
 		}
 		catch(std::bad_alloc& ba)
 		{
-			cout << "memory unavailable, when allocating space for vertices" << endl;
+			//cout << "memory unavailable, when allocating space for vertices" << endl;
 			cerr << "bad_alloc caught: " << ba.what() << endl;
 		}
 		vertexNode* p = vertices + 1;
@@ -49,7 +49,7 @@ public:
 		}
 		catch(std::bad_alloc& ba)
 		{
-			cout << "memory unavailable, when allocating space for head node" << endl;
+			//cout << "memory unavailable, when allocating space for head node" << endl;
 			cerr << "bad_alloc caught: " << ba.what() << endl;
 		}
 		try
@@ -58,7 +58,7 @@ public:
 		}
 		catch(std::bad_alloc& ba)
 		{
-			cout << "memory unavailable, when allocating space for tail node" << endl;
+			//cout << "memory unavailable, when allocating space for tail node" << endl;
 			cerr << "bad_alloc caught: " << ba.what() << endl;
 		}
 		head_p->vertexName = 0;
@@ -87,7 +87,7 @@ public:
 		head_p->prior = NULL;
 		head_p->next = tail_p;
 		tail_p->next = NULL;
-		tail_p->prior = head_p;		
+		tail_p->prior = head_p;
 	}
 	int get_head_v()
 	{

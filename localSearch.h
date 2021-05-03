@@ -15,6 +15,7 @@ using namespace std;
 #include "operandSets.h"
 #include "cliqueHash.h"
 #include "constants.h"
+//#include "new_hashtable.h"
 
 //#define strategy_analysis_mode
 
@@ -22,13 +23,15 @@ using namespace std;
 //#define using_init_mode
 
 //#define reset_mode
-#define drop_clear_mode
+//#define drop_clear_mode
 
-#define neg_score_greedy_mode
+//#define neg_score_greedy_mode
 
 #define clique_hash_mode
+//#define new_hash_mode
 
 //#define vertex_stamp_queue_mode
+
 
 class StochasticLocalSearch : private Graph
 {
@@ -38,6 +41,7 @@ private:
 
     Bijection *ptr_to_clique_neighbors;
     int *connect_clique_degree;
+
 
     long double *score;
     HugeInt *time_stamp;
@@ -64,7 +68,15 @@ private:
 #endif
 #ifdef clique_hash_mode
     CliqueHash *ptr_to_hashed_clique;
+    //new_hashtable *ptr_to_hashed_clique;
     int last_step_improved;
+
+#endif
+//Change to original to code - Emily Ehrlich
+#ifdef new_clique_mode
+   new_hashtable *ptr_to_new_hashed_clique;
+   ptr_to_new_hashed_clique.insert_elements(v_num)
+   int last_step_improved;
 #endif
 
 #ifdef strategy_analysis_mode
@@ -321,6 +333,10 @@ private:
 #ifdef clique_hash_mode
         ptr_to_hashed_clique->update_hash_wrt_add(v);
 #endif
+//Modification - Emily Ehrlich
+#ifdef new_hash_mode
+	ptr_to_new_hashed_clique->add_new_weight(v);
+#endif
     }
 
     void swap(int u, int v)// assuming that u is in Clique, but v is not in Clique
@@ -500,6 +516,7 @@ public:
 #endif
 #ifdef clique_hash_mode
         ptr_to_hashed_clique = new CliqueHash(v_num);
+        //ptr_to_hashed_clique = new new_hashtable(v_num);
         last_step_improved = 1;
 #ifdef strategy_analysis_mode
         revisit_estimated_num = 0;
@@ -550,10 +567,11 @@ public:
                 {
                     times(&finish);
                     double elap_time = (finish.tms_utime + finish.tms_stime - start_time) / sysconf(_SC_CLK_TCK);
+                    //if(step >= 3) return;
                     if(elap_time >= time_limit) return;
                 }
                 local_move();
-                //show_state();
+                show_state();
 //getchar();
 #ifdef reset_mode
             }
@@ -568,13 +586,13 @@ public:
         double elap_time = (finish.tms_utime + finish.tms_stime - start_time) / sysconf(_SC_CLK_TCK);
         if(check_solution())
         {
-            /*
+
             			cout << "o " << best_clique_weight << endl;
             			cout << "c size " << best_weighted_clique_size << endl;
             			cout << "c solveTime " << best_cmp_time << endl;
             			cout << "c searchSteps " << best_solve_step << endl;
             			cout << "c stepSpeed(/ms) " << setprecision(3) << step / 1000.0 / elap_time << endl;
-            */
+
 #ifdef strategy_analysis_mode
             cout << "the total number of steps: " << step << endl;
             cout << "the number of try is: " << (long long)(step / double(SEARCH_DEPTH) )+ 1 << endl;
@@ -594,21 +612,21 @@ public:
     void show_state()
     {
         int v, e;
-        /*
+
         		for(e = 0; e < e_num; e++)
         		{
         			int v1, v2;
         			edges[e].get_vertices(v1, v2);
         			cout << "edge " << e << ": " << v1 << " " << v2 << endl;
         			int e_index = edge_index_of(v1, v2);
-        			cout << "edge " << e_index << ": " << v1 << " " << v2 << endl;
+        			cout << "edge " << e_index << ": " << v1 << " " << v2 <<endl;
         			if(e_index != e)
         			{
         				cout << "vertices " << v1 << " and " << v2 << " mapped to edge incorrectly with e_index =" << e_index << "and e = " << e << endl;
         				exit(1);
         			}
         		}
-        */
+
         /*
         		for(v = 1; v <= v_num; v++)
         		{
@@ -639,6 +657,7 @@ public:
         //reduece the number of size calls
         int prt_to_weighted_clique_size = ptr_to_weighted_clique->size();
         int ptr_to_clique_neighbors_size = ptr_to_clique_neighbors->size();
+
         cout << "step: " << step << endl;
         cout << "the clique: " << endl;
         for(i = 1; i <= prt_to_weighted_clique_size; i++)
@@ -671,7 +690,9 @@ public:
         for(v = 1; v <= v_num; v++)
         {
             if(ptr_to_swap_set->element_in(v))
+            {
                 cout << "outside: " << v << " and inside: " << swap_partner[v] << endl;
+            }
         }
         cout << "clique neighbors: " << endl;
         for(i = 1; i <= ptr_to_clique_neighbors_size; i++)
@@ -688,13 +709,13 @@ public:
         cout << "scores: " << endl;
         for(i = 1; i <= ptr_to_clique_neighbors_size; i++)
         {
-            cout << score[ptr_to_clique_neighbors->at(i)] << '\t';
+           cout << score[ptr_to_clique_neighbors->at(i)] << '\t';
         }
         cout << endl;
         cout << "add-set: " << endl;
         for(i = 1; i <= ptr_to_add_set->size(); i++)
         {
-            cout << ptr_to_add_set->at(i) << '\t';
+          //  cout << ptr_to_add_set->at(i) << '\t';
         }
         cout << endl;
 
